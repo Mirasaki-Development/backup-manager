@@ -1,0 +1,62 @@
+--- # SFTP data
+
+# Remote connection address
+# The server/machine where to get files from
+remote: &remote
+  host: 15.254.22.124
+  port: 22
+
+# Password authentication
+username: user
+password: password
+
+# Your private SSH key, if you use one (publickey method)
+private-key: |
+# Your SSH passphrase, if your key requires it
+passphrase: 
+# Alternatively, provide an SSH Auth socket/agent
+ssh-auth-sock: 
+
+# Your (optional) SOCKS proxy configuration
+proxy:
+  enabled: false
+  host: 159.203.75.200 # proxy hostname
+  port: 1080 # proxy port
+  type: 5 # For SOCKS v5 - 4 or 5
+  command: connect # SOCKS command (createConnection factory function only supports the connect command)
+  destination: *remote # Use remote host reference
+
+# List of origins to create backups for
+# Uses / (forward-slashes) for all paths, EVEN on Windows
+# If your path is "C:\Users\fred" you provide "/C:/Users/fred"
+# For more information: https://www.npmjs.com/package/ssh2-sftp-client#org0cb332c
+create-backups:
+  OmegaManager backups:
+  - type: Directory
+    origin: /D:/DayZ/servers/1/backups
+    destination: backups/DayZ/OmegaManagerBackups
+    compress: true
+    interval: 60    # Every hour
+    keep-latest: 72 # 3 days
+
+  # Partial/Minimal DayZ Backup
+  - type: Entries
+    origin: /D:/DayZ/servers/1
+    destination: backups/DayZ/PartialBackups
+    compress: true
+    interval: 180   # Every 3 hours
+    keep-latest: 24 # 3 Days
+    entries:
+      - mpmissions\unchained.chernarusplus
+      - profiles
+      - serverDZ.cfg
+      - omega.cfg
+
+  # (DISABLED) Full DayZ Backup = VERY large and resource heavy
+  - type: Directory
+    enabled: false
+    origin: /D:/DayZ/servers/1
+    destination: backups/DayZ/FullBackups
+    compress: true
+    interval: 1440  # Daily
+    keep-latest: 1  # 1 Day

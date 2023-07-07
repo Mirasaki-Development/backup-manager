@@ -1,1 +1,1 @@
-# dayz-server-backups
+# backup-manager
