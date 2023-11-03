@@ -10,5 +10,5 @@ services:
       - ./:/app:ro
       # Anonymous volume
       - /app/node_modules
-    env_file:
-      - ./.env
+      # Backup folder
+      - ./backups:/app/backups

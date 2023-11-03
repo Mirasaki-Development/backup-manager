@@ -4,6 +4,9 @@
 Procfile
 release.config.js
 
+# Backups data folder
+/backups
+
 # NPM & dependencies
 node_modules
 npm-debug.log

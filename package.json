@@ -11,7 +11,7 @@
     "dev": "ts-node-dev --transpile-only src/index.ts",
     "docker:build": "docker build --tag backup-manager .",
     "docker:shell": "docker run -it --rm backup-manager sh",
-    "docker:start": "docker run -it --env-file ./.env -d --name backup-manager backup-manager",
+    "docker:start": "docker run -it -v \"$(pwd)\"/backups:/app/backups -d --name backup-manager backup-manager",
     "docker:restart": "docker restart backup-manager",
     "docker:stop": "docker stop backup-manager",
     "docker:kill": "docker rm -f backup-manager",
