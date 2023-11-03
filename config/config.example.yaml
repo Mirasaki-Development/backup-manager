@@ -31,7 +31,7 @@ proxy:
 # If your path is "C:\Users\fred" you provide "/C:/Users/fred"
 # For more information: https://www.npmjs.com/package/ssh2-sftp-client#org0cb332c
 create-backups:
-  # OmegaManager backups
+  # OmegaManager backups:
   - type: Directory
     origin: /D:/DayZ/servers/1/backups
     destination: backups/DayZ/OmegaManagerBackups

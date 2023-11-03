@@ -1,7 +1,7 @@
 {
   "name": "backup-manager",
   "version": "1.0.0",
-  "description": "An application that provides convenience methods around creating, storing, and restoring from backups",
+  "description": "An application that provides convenience methods around managing backups over SFTP/SSH",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
