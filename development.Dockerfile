@@ -17,4 +17,4 @@ COPY . ./
 # RUN ls -al -R
 
 # Run the start command
-CMD [ "npx", "nodemon", "--inspect=0.0.0.0:9229", "src/index.ts" ]
+CMD [ "npx", "ts-node-dev", "--inspect=0.0.0.0:9229", "src/index.ts" ]

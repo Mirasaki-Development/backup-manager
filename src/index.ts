@@ -6,7 +6,7 @@ import { Client, initializeCreateBackupTasks } from './lib'
 import { type ClientConfig } from './types/config'
 import { AuthType } from './types/connect'
 
-// Licensing print
+// Licensing print / vanity
 console.info('Backup Manager, seamlessly create, manage and deploy backups remotely\nCopyright (C) 2023 Richard Hillebrand (Mirasaki)')
 
 // Make sure we have a config file
