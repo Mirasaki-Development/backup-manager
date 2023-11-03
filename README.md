@@ -2,7 +2,7 @@
 <h1 align="center">Backup Manager</h1>
 
 <p align="center">
-    This is a simple TypeScript (NodeJS) application to seamlessly manage backups over SFTP/SSH. Ideally, you would install this application on a dedicated machine. No proxies or web-servers required.
+  This is a simple TypeScript (NodeJS) application to seamlessly manage backups over SFTP/SSH. Ideally, you would install this application on a dedicated machine. No proxies or web-servers required.
 </p>
 
 ## Features
@@ -117,3 +117,5 @@ Only the files listed in the `entries` array are included in the back-up.
         - serverDZ.cfg
         - omega.cfg
 ```
+
+> Hi there, and thank you for your interest in this project! This application could definitely do a lot more than what it currently offers, we'd love to hear about your use-cases so that we can support a variety of other workflows. [Request a feature here](https://github.com/Mirasaki/backup-manager/issues)
