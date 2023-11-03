@@ -31,6 +31,8 @@
 
 ## Configuration
 
+This merely serves as an example for reference, always create your config file from the `/config/config.example.yaml` file!
+
 The configuration file is located at `/config/config.yaml`. The configuration file is written in YAML. You can use [this website](https://www.yamllint.com/) to validate your configuration file.
 
 ### Example Configuration
@@ -71,6 +73,28 @@ proxy:
 
 ### Backup Configuration
 
+‼️ If `destination` doesn't exist, the folder will be created recursively
+
+#### Directory Files Backup (Entries)
+
+This example creates a backup of the `/D:/DayZ/servers/1` directory on the remote server, and stores it in the `backups/DayZ/PartialBackups` directory on the local machine. The backup is compressed, and a new backup is created every 3 hours. The last 24 backups are kept, which means that backups older than 3 days are deleted.
+
+Only the files listed in the `entries` array are included in the back-up.
+
+```yaml
+-   type: Entries
+    origin: /D:/DayZ/servers/1
+    destination: backups/DayZ/PartialBackups
+    compress: true
+    interval: 180   # Every 3 hours
+    keep-latest: 24 # 3 Days
+    entries:
+        - mpmissions\unchained.chernarusplus
+        - profiles
+        - serverDZ.cfg
+        - omega.cfg
+```
+
 #### Directory Backup
 
 This example creates a backup of the `/D:/DayZ/servers/1` directory on the remote server, and stores it in the `backups/DayZ/OmegaManagerBackups` directory on the local machine. The backup is compressed, and a new backup is created every hour. The last 72 backups are kept, which means that backups older than 3 days are deleted.
@@ -96,26 +120,6 @@ The following example creates a backup of the `/D:/DayZ/servers/1` directory on 
     compress: true
     interval: 1440  # Daily
     keep-latest: 1  # 1 Day
-```
-
-#### Directory Files Backup (Entries)
-
-This example creates a backup of the `/D:/DayZ/servers/1` directory on the remote server, and stores it in the `backups/DayZ/PartialBackups` directory on the local machine. The backup is compressed, and a new backup is created every 3 hours. The last 24 backups are kept, which means that backups older than 3 days are deleted.
-
-Only the files listed in the `entries` array are included in the back-up.
-
-```yaml
--   type: Entries
-    origin: /D:/DayZ/servers/1
-    destination: backups/DayZ/PartialBackups
-    compress: true
-    interval: 180   # Every 3 hours
-    keep-latest: 24 # 3 Days
-    entries:
-        - mpmissions\unchained.chernarusplus
-        - profiles
-        - serverDZ.cfg
-        - omega.cfg
 ```
 
 > Hi there, and thank you for your interest in this project! This application could definitely do a lot more than what it currently offers, we'd love to hear about your use-cases so that we can support a variety of other workflows. [Request a feature here](https://github.com/Mirasaki/backup-manager/issues)
