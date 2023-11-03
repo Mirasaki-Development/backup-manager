@@ -3,6 +3,7 @@ import { type CreateBackupConfig } from '../../types/config'
 import { MS_IN_ONE_SECOND, SECONDS_IN_ONE_MINUTE } from '../../magic-number'
 import { allCreateBackupTypes, CreateBackupTaskError, type Client } from '..'
 import { createWriteStream, readdirSync, rmSync, rmdirSync, statSync } from 'fs'
+import notifier from 'node-notifier'
 import tar from 'tar'
 import path from 'path'
 import { getEmptyFolders, goOneDirectoryUp, msToHumanReadableTime, sortFilesByCreationTime } from '../../util'
@@ -12,7 +13,7 @@ let _createBackupTaskIndex = 0
 
 export class CreateBackupTask {
   readonly index = _createBackupTaskIndex++
-
+  sendNotifications: boolean
   identifier = `[task #${this.index + 1}]`
   client: Client
   enabled: boolean = true
@@ -72,6 +73,7 @@ export class CreateBackupTask {
     this.compress = config.compress ?? true
     this.interval = (config.interval ?? 3600) * MS_IN_ONE_SECOND * SECONDS_IN_ONE_MINUTE
     this.keepLatest = config['keep-latest'] ?? 5
+    this.sendNotifications = config['desktop-notifications'] ?? true
 
     // Always save in client tasks
     client.tasks.create.push(this)
@@ -83,6 +85,15 @@ export class CreateBackupTask {
     this._timerStart = Date.now()
 
     const executeRunFn = async (schedule: boolean = true): Promise<void> => {
+      if (this.sendNotifications) {
+        notifier.notify({
+          title: 'Backup Manager',
+          message: `${this.identifier} Starting backup task #${this.index + 1} - ${this.type}\n\nOrigin: ${this.origin}\nDestination: ${this.destination}`,
+          sound: true,
+          wait: true
+        })
+      }
+
       try {
         await runFn()
         this.runs++
@@ -92,6 +103,14 @@ export class CreateBackupTask {
             (this.nextRun as number) - Date.now()
           )}`
         )
+        if (this.sendNotifications) {
+          notifier.notify({
+            title: 'Backup Manager',
+            message: `${this.identifier} Finished backup task #${this.index + 1} - ${this.type}\n\nOrigin: ${this.origin}\nDestination: ${this.destination}`,
+            sound: true,
+            wait: false
+          })
+        }
         if (schedule) {
           setTimeout(() => {
             void executeRunFn()
@@ -102,10 +121,10 @@ export class CreateBackupTask {
       }
     }
 
-    // Schedule the initial run
+    // Initial run
     await executeRunFn(false)
 
-    // Schedule subsequent runs with proper timing
+    // Schedule subsequent runs
     this._timer = setTimeout(() => {
       void executeRunFn()
     }, this.interval)
@@ -127,6 +146,14 @@ export class CreateBackupTask {
       }
 
       deletedCount = sortedFiles.length - this.keepLatest
+    }
+    if (this.sendNotifications && deletedCount > 0) {
+      notifier.notify({
+        title: 'Backup Manager',
+        message: `${this.identifier} Deleted/cleaned ${deletedCount} old backup(s)`,
+        sound: true,
+        wait: false
+      })
     }
     return deletedCount
   }
@@ -173,6 +200,15 @@ export class CreateBackupTask {
 
       tar.c({ gzip: true, cwd: targetPath }, ['.']).pipe(writeStream)
     })
+
+    if (this.sendNotifications) {
+      notifier.notify({
+        title: 'Backup Manager',
+        message: `${this.identifier} Finished compressing backup`,
+        sound: true,
+        wait: false
+      })
+    }
   }
 
   // Local

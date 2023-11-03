@@ -16,6 +16,7 @@ export interface ClientConfig {
 
 export interface CreateBackupConfig {
   type?: keyof typeof CreateBackupTypes
+  'desktop-notifications'?: boolean
   enabled?: boolean
   origin?: string
   destination?: string

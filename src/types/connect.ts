@@ -8,7 +8,7 @@ export enum ProxyType {
   SOCKSv5
 }
 
-export type ProxyTypeOptions = 4 | 5
+export type ProxyTypeOptions = ProxyType
 
 export enum ProxyCommand {
   CONNECT = 'connect',
