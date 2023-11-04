@@ -123,3 +123,7 @@ The following example creates a backup of the `/D:/DayZ/servers/1` directory on 
 ```
 
 > Hi there, and thank you for your interest in this project! This application could definitely do a lot more than what it currently offers, we'd love to hear about your use-cases so that we can support a variety of other workflows. [Request a feature here](https://github.com/Mirasaki/backup-manager/issues)
+
+## Attribution
+
+- <a href="https://www.flaticon.com/free-icons/backup" title="backup icons">Backup icon created by Freepik - Flaticon</a>
