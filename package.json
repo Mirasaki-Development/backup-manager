@@ -1,6 +1,6 @@
 {
   "name": "backup-manager",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An application that provides convenience methods around managing backups over SFTP/SSH",
   "main": "dist/index.js",
   "scripts": {
