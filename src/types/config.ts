@@ -14,6 +14,8 @@ export interface ClientConfig {
   'create-backups': CreateBackupConfig[]
 }
 
+export type TaskServerConfig = Omit<ClientConfig, 'create-backups'>
+
 export interface CreateBackupConfig {
   type?: keyof typeof CreateBackupTypes
   'desktop-notifications'?: boolean
@@ -23,6 +25,7 @@ export interface CreateBackupConfig {
   compress?: boolean
   interval?: number
   'keep-latest'?: number
+  server?: TaskServerConfig
 }
 
 export interface CreateEntriesBackupConfig extends CreateBackupConfig {

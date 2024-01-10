@@ -124,6 +124,36 @@ The following example creates a backup of the `/D:/DayZ/servers/1` directory on 
 
 > Hi there, and thank you for your interest in this project! This application could definitely do a lot more than what it currently offers, we'd love to hear about your use-cases so that we can support a variety of other workflows. [Request a feature here](https://github.com/Mirasaki/backup-manager/issues)
 
+#### Multiple Server Backups
+
+All of the server/authentication options can also be provided in task configurations to override the target server.
+
+Take the following task as an example:
+
+```yaml
+-   type: Directory
+    enabled: false
+    origin: /D:/DayZ/servers/1
+    destination: backups/DayZ/FullBackups
+    compress: true
+    interval: 1440  # Daily
+    keep-latest: 1  # 1 Day
+```
+
+Let's say we need to run this task on a different server than our default, origin server. We can simply override the ip/origin address, and provide different credentials:
+
+```yaml
+-   type: Directory
+    # ... Existing task properties
+    keep-latest: 1  # 1 Day
+    # Auth/server options
+    remote:
+      host: 41.69.129.420
+      port: 9292
+    username: mirasaki
+    password: your-password-here
+```
+
 ## Attribution
 
 - <a href="https://www.flaticon.com/free-icons/backup" title="backup icons">Backup icon created by Freepik - Flaticon</a>

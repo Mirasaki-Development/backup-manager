@@ -1,5 +1,5 @@
 import { CreateBackupTypes } from '../../types/backups'
-import { type CreateBackupConfig } from '../../types/config'
+import { type TaskServerConfig, type CreateBackupConfig } from '../../types/config'
 import { MS_IN_ONE_SECOND, SECONDS_IN_ONE_MINUTE } from '../../magic-number'
 import { allCreateBackupTypes, CreateBackupTaskError, type Client } from '..'
 import { createWriteStream, readdirSync, rmSync, rmdirSync, statSync } from 'fs'
@@ -24,6 +24,7 @@ export class CreateBackupTask {
   interval: number
   keepLatest: number
   runs = 0
+  server: TaskServerConfig | null = null
 
   private _timerStart: number | null = null
   get timerStart (): number | null {
@@ -74,6 +75,7 @@ export class CreateBackupTask {
     this.interval = (config.interval ?? 3600) * MS_IN_ONE_SECOND * SECONDS_IN_ONE_MINUTE
     this.keepLatest = config['keep-latest'] ?? 5
     this.sendNotifications = config['desktop-notifications'] ?? true
+    this.server = config.server ?? null
 
     // Always save in client tasks
     client.tasks.create.push(this)

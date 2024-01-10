@@ -48,8 +48,8 @@ export class Client {
 
   async connect (
     task: CreateBackupTask | null,
-    onConnect: (sftpClient: SFTPClient) => any | Promise<any>,
-    onRefuse: (err: Error) => any | Promise<any> = (err) => {
+    onConnect: (sftpClient: SFTPClient, task: CreateBackupTask | null) => any | Promise<any>,
+    onRefuse: (err: Error, task: CreateBackupTask | null) => any | Promise<any> = (err) => {
       console.error('Error encountered while connecting to remote:')
       console.error(err)
       console.error('Can\'t continue, exiting...')
@@ -69,16 +69,28 @@ export class Client {
       }
     }
 
+    // Override host/port if task has remote options
+    if ((task?.server) != null) {
+      const { server } = task
+      this.connectOptions.host = server.remote.host
+      this.connectOptions.port = server.remote.port
+      this.connectOptions.username = server.username
+      if (server.password != null) this.connectOptions.password = server.password
+      if (server['private-key'] != null) this.connectOptions.privateKey = server['private-key']
+      if (server.passphrase != null) this.connectOptions.passphrase = server.passphrase
+      if (server['ssh-auth-sock'] != null) this.connectOptions.agent = server['ssh-auth-sock']
+    }
+
     const sftpClient = new SFTPClient()
     try {
       await sftpClient.connect(this.connectOptions)
       if (task != null) console.info(`${task.identifier} SFTP connection established`)
       this.connected = true
-      await onConnect(sftpClient)
+      await onConnect(sftpClient, task)
       return true
     } catch (err: unknown) {
       if (task != null) console.error(`${task.identifier} SFTP connection couldn't be established`)
-      if (typeof onRefuse === 'function') await onRefuse(err as Error)
+      if (typeof onRefuse === 'function') await onRefuse(err as Error, task)
       return false
     } finally {
       if (task != null) console.info(`${task.identifier} Closing/ending SFTP connection...`)
